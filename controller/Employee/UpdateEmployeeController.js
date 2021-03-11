@@ -1,0 +1,41 @@
+var express = require('express');
+var router = express.Router();
+let employeeClass = require('../../classes/EmployeeClass');
+let updateEmployeeService = require('../../service/Employee/updateEmployeeService');
+let commonFunction = require('../../common/CommonFunction');
+
+router.post('/updateEmployee',async (req, res) => {
+    console.log('Inside get employee controller!!!');
+    let employeeClassReq = new employeeClass();
+    let updateEmployeeServiceReq = new updateEmployeeService();
+    let commonFunc = new commonFunction();
+    let reqBody = req.body;
+    let reqHeaders = req.headers;
+    
+    req.check('emp_no','emp_no is mantoary field!').notEmpty();
+    req.check('emp_no','emp_no should be numeric!').isNumeric();
+    req.check('birth_date','birth_date is mantoary field!').notEmpty();
+    req.check('first_name','first_name id mandatory field!').notEmpty();
+    req.check('last_name','last_name     is mantoary field!').notEmpty();
+    req.check('gender','gender is mantoary field!').notEmpty();    
+    req.check('hire_date','hire_date is mantoary field!').notEmpty();   
+    
+    const errors = req.validationErrors();
+    if (errors) {
+        console.log(errors);
+        return res.status(400).send({ message: await commonFunc.getValidationMessage(errors), status: false });
+    }
+
+    try {
+        let decodedToken = await commonFunc.decodeToken(reqHeaders.token);
+        console.log(decodedToken);
+
+        let result = await employeeClassReq.updateEmployeeData(reqBody,decodedToken,updateEmployeeServiceReq,res);
+        res.status(200).send({ message: 'Employee Updated seccessfully!!!', status: true, data: result });
+    } catch (err) {
+        console.error(err);
+        return res.status(400).send({ err: err, status: false });
+    }
+});
+
+module.exports = router;
