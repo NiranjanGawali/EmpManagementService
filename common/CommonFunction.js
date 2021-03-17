@@ -74,7 +74,7 @@ commonFunc.prototype.checkIfAlreadyRegistered = async (email) => {
 // Encode the JWT token and return user details
 commonFunc.prototype.encodeToken = async (userEmail) => {
     let encodedToken = new Promise((resolve,reject) => {
-        var token = jwt.sign({ data: userEmail }, process.env.TOKEN_SERCRET, { expiresIn: '1h' });
+        var token = jwt.sign({ data: userEmail }, process.env.TOKEN_SERCRET, { expiresIn: '1d' });
         resolve(token);
     });
     return encodedToken;

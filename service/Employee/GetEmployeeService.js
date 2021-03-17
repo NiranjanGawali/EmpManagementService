@@ -38,7 +38,7 @@ GetEmployeeService.prototype.getEmployeeDataMethod = async (reqParams, tokenData
             console.log('First name we get => ',firstName);
             sql = commonQuery.SEARCH_EMPLOYEE_BY_FIRST_NAME;
             values.length = 0;
-            values = [firstName,limit,offset];
+            values = [firstName,firstName,limit,offset];
         }
 
         conn.query(sql,values,async (err, data) => {
