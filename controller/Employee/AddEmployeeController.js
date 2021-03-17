@@ -3,6 +3,7 @@ var router = express.Router();
 let employeeClass = require('../../classes/EmployeeClass');
 let addEmployeeService = require('../../service/Employee/AddEmployeeService');
 let commonFunction = require('../../common/CommonFunction');
+let utlity = require('./../../utils/Util');
 
 router.post('/addEmployee',async (req, res) => {
     console.log('Inside get employee controller!!!');
@@ -11,6 +12,8 @@ router.post('/addEmployee',async (req, res) => {
     let commonFunc = new commonFunction();
     let reqBody = req.body;
     let reqHeaders = req.headers;
+
+    let util = new utlity();
 
     req.check('emp_no','emp_no is mantoary field!').notEmpty();
     req.check('emp_no','emp_no should be numeric!').isNumeric();
@@ -31,10 +34,12 @@ router.post('/addEmployee',async (req, res) => {
         console.log(decodedToken);
 
         let result = await employeeClassReq.addEmployeeData(reqBody,decodedToken,addEmployeeServiceReq,res);
-        res.status(200).send({ message: 'Employee added seccessfully!!!', status: true, data: result });
+        res.statusCode = result.statusCode;
+        res.send(result);
     } catch (err) {
         console.error(err);
-        return res.status(400).send({ err: err, status: false });
+        res.statusCode = err.statusCode;
+        return res.send(err);
     }
 });
 

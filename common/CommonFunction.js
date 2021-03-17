@@ -4,6 +4,7 @@ var commonFunc = function () {};
 var mysqlConnection = require('./../mysql-connect');
 var jwt = require('jsonwebtoken');
 let commonQueries = require('../utils/QueryUtility');
+let util = require('../utils/Util');
 
 commonFunc.prototype.getValidationMessage = async (errArray) => {
     for(let y = 0; y < errArray.length; y++) {
@@ -82,16 +83,22 @@ commonFunc.prototype.encodeToken = async (userEmail) => {
 
 // Decode the JWT token and return user details
 commonFunc.prototype.decodeToken = async (token) => {
-    let decodedToken = new Promise((resolve,reject) => {       
-        jwt.verify(token, process.env.TOKEN_SERCRET, function(err, decoded) {
-            if(err) {
-                reject(err);
-                return console.error(err);
-            }
-            resolve(decoded);
+    try {
+        var utilfunc = new util();
+        let decodedToken = new Promise((resolve,reject) => {       
+            jwt.verify(token, process.env.TOKEN_SERCRET, function(err, decoded) {
+                if(err) {                   
+                    reject(utilfunc.TOKEN_EXPIRED);
+                    return console.error(err);
+                }
+                resolve(decoded);
+            });
         });
-    });
-    return decodedToken;
+        return decodedToken;   
+    } catch (err) {
+        console.error('CATCHING ERROR HERE!!!!');
+        reject(utilfunc.TOKEN_EXPIRED);
+    }
 }
 
 

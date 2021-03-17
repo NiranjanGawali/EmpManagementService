@@ -29,10 +29,14 @@ router.get('/getEmployeeData',async (req, res) => {
         console.log(decodedToken);
 
         let result = await employeeClassReq.getEmployeeData(reqParam,decodedToken,getEmployeeServiceReq,res);
-        res.status(200).send({ message: 'Employee Data found!!!', status: true, data: result });
+        // res.status(200).send({ message: 'Employee Data found!!!', status: true, data: result });
+        res.statusCode = result.statusCode;
+        res.send(result);
     } catch (err) {
         console.error(err);
-        return res.status(400).send({ err: err, status: false });
+        // return res.status(400).send({ err: err, status: false });
+        res.statusCode = err.statusCode;
+        return res.send(err);
     }
 });
 

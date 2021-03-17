@@ -31,10 +31,14 @@ router.post('/updateEmployee',async (req, res) => {
         console.log(decodedToken);
 
         let result = await employeeClassReq.updateEmployeeData(reqBody,decodedToken,updateEmployeeServiceReq,res);
-        res.status(200).send({ message: 'Employee Updated seccessfully!!!', status: true, data: result });
+        // res.status(200).send({ message: 'Employee Updated seccessfully!!!', status: true, data: result });
+        res.statusCode = result.statusCode;
+        res.send(result);
     } catch (err) {
         console.error(err);
-        return res.status(400).send({ err: err, status: false });
+        // return res.status(400).send({ err: err, status: false });
+        res.statusCode = err.statusCode;
+        return res.send(err);
     }
 });
 

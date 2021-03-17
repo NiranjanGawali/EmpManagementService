@@ -2,6 +2,7 @@ var AddEmployeeService = function () { };
 var mysqlConnection = require('../../mysql-connect');
 let commonFunction = require('../../common/CommonFunction');
 let commonQueries = require('../../utils/QueryUtility');
+let Util = require('./../../utils/Util');
 require('dotenv').config()
 
 AddEmployeeService.prototype.addEmployeeDataMethod = async (reqBody, tokenData, request) => {
@@ -11,6 +12,7 @@ AddEmployeeService.prototype.addEmployeeDataMethod = async (reqBody, tokenData, 
         let commonFunc = new commonFunction();
         let msyqlConn = new mysqlConnection();
         let commonQuery = new commonQueries();
+        let util = new Util();
         let conn = await msyqlConn.createDbConnection();
         conn.connect();
 
@@ -22,12 +24,16 @@ AddEmployeeService.prototype.addEmployeeDataMethod = async (reqBody, tokenData, 
 
         conn.query(commonQuery.ADD_EMPLOYEE,values, (err, data) => {
             if (err) {
-                reject(err);
-                return console.error(err);
+                console.error(err);
+                if(err.code == 'ER_DUP_ENTRY') {
+                    return reject(util.EMP_ALERADY_EXISTS);
+                } else
+                    return reject(util.INTERNAL_SERVER_ERROR);
             }
-            console.log('DATA');
             conn.end();
-            resolve(data);
+            // resolve(data);
+            resolve(util.ADD_SUCCESS);
+
         });
 
     });

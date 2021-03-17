@@ -2,6 +2,7 @@ var GetEmployeeService = function () { };
 var mysqlConnection = require('../../mysql-connect');
 let commonFunction = require('../../common/CommonFunction');
 let commonQueries = require('../../utils/QueryUtility');
+let Util = require('./../../utils/Util');
 require('dotenv').config()
 
 GetEmployeeService.prototype.getEmployeeDataMethod = async (reqParams, tokenData, request) => {
@@ -13,6 +14,7 @@ GetEmployeeService.prototype.getEmployeeDataMethod = async (reqParams, tokenData
         let commonFunc = new commonFunction();
         let msyqlConn = new mysqlConnection();
         let commonQuery = new commonQueries();
+        let util = new Util();
         let conn = await msyqlConn.createDbConnection();
         conn.connect();
 
@@ -38,7 +40,7 @@ GetEmployeeService.prototype.getEmployeeDataMethod = async (reqParams, tokenData
             console.log('First name we get => ',firstName);
             sql = commonQuery.SEARCH_EMPLOYEE_BY_FIRST_NAME;
             values.length = 0;
-            values = [firstName,firstName,limit,offset];
+            values = [firstName,firstName,firstName,limit,offset];
         }
 
         conn.query(sql,values,async (err, data) => {
@@ -48,11 +50,13 @@ GetEmployeeService.prototype.getEmployeeDataMethod = async (reqParams, tokenData
             }
             console.log('DATA');
             let count = await commonFunc.getEmployeeCount();
-            resultObj.count = count;
-            resultObj.data = data;
+            util.SUCCESS_DATA_COUNT.count = count;
+            util.SUCCESS_DATA_COUNT.data = data;
+            // resultObj.count = count;
+            // resultObj.data = data;
             console.log('COUNT => ',count);
             conn.end();
-            resolve(resultObj);
+            resolve(util.SUCCESS_DATA_COUNT);
         });
 
     });

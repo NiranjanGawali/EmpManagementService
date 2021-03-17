@@ -3,12 +3,14 @@ var router = express.Router();
 let userClass = require('../../classes/UserClass');
 let signupService = require('./../../service/User/SignupService');
 let commonFunction = require('../../common/CommonFunction');
+let utlity = require('./../../utils/Util');
 
 router.post('/signup',async (req, res) => {
     console.log('Inside signup user controller!!!');
     let userClassReq = new userClass();
     let signupServiceReq = new signupService();
     let commonFunc = new commonFunction();
+    let util = new utlity();
 
     let reqBody = req.body;
 
@@ -24,20 +26,27 @@ router.post('/signup',async (req, res) => {
         return res.status(400).send({ message: await commonFunc.getValidationMessage(errors), status: false });
     }
 
-    if(reqBody.password != reqBody.confirmPassword)
-        return res.status(401).send({ message: 'Password and Confirm password fields value should be same!!!', status: false });
+    if(reqBody.password != reqBody.confirmPassword) {
+        res.statusCode = util.PASSWORD_CONFLICT.statusCode;
+        return res.send(util.PASSWORD_CONFLICT);
+    }
 
     let isUserAlreadyRegistered = await commonFunc.checkIfAlreadyRegistered(reqBody.email);
     if(isUserAlreadyRegistered.isPresent) {
-        return res.status(409).send({ message: 'User Already Registered!!!', status: false });
+        util.CUSTOM_WRAPPER.statusCode = util.PASSWORD_CONFLICT.statusCode;
+        res.statusCode = util.PASSWORD_CONFLICT.statusCode;
+        util.CUSTOM_WRAPPER.message = 'User Already Registered!!!';
+        return res.send(util.CUSTOM_WRAPPER);
     }
 
     try {
         let result = await userClassReq.signupUser(reqBody, signupServiceReq,res);
-        res.status(200).send({ message: 'User Signup Seccessfully!!!', status: true, data: result });
+        res.statusCode = result.statusCode;
+        res.send(result);
     } catch (err) {
         console.error(err);
-        return res.status(400).send({ err: err, status: false });
+        res.statusCode = err.statusCode;
+        return res.send(err);
     }
 });
 

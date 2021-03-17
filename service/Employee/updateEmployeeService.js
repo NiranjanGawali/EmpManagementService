@@ -2,6 +2,7 @@ var UpdateEmployeeService = function () { };
 var mysqlConnection = require('../../mysql-connect');
 let commonFunction = require('../../common/CommonFunction');
 let commonQueries = require('../../utils/QueryUtility');
+let Util = require('./../../utils/Util');
 require('dotenv').config()
 
 UpdateEmployeeService.prototype.updateEmployeeDataMethod = async (reqBody, tokenData, request) => {
@@ -12,6 +13,7 @@ UpdateEmployeeService.prototype.updateEmployeeDataMethod = async (reqBody, token
         let msyqlConn = new mysqlConnection();
         let commonQuery = new commonQueries();
         let conn = await msyqlConn.createDbConnection();
+        let util = new Util();
         conn.connect();
 
         let loggedInUserEmail = tokenData.data;
@@ -21,10 +23,10 @@ UpdateEmployeeService.prototype.updateEmployeeDataMethod = async (reqBody, token
         conn.query(commonQuery.UPDATE_EMPLOYEE,values, (err, data) => {
             if (err) {
                 reject(err);
-                return console.error(err);
+                return reject(util.INTERNAL_SERVER_ERROR);
             }
             conn.end();
-            resolve(data);
+            resolve(util.EDIT_SUCCESS);
         });
 
     });

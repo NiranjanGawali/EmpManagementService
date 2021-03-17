@@ -3,12 +3,14 @@ var router = express.Router();
 let userClass = require('../../classes/UserClass');
 let loginService = require('../../service/User/LoginService');
 let commonFunction = require('../../common/CommonFunction');
+let utlity = require('./../../utils/Util');
 
 router.post('/login',async (req, res) => {
     console.log('Inside signup user controller!!!');
     let userClassReq = new userClass();
     let loginServiceReq = new loginService();
     let commonFunc = new commonFunction();
+    let util = new utlity();
 
     let reqBody = req.body;
 
@@ -24,15 +26,18 @@ router.post('/login',async (req, res) => {
 
     let isUserAlreadyRegistered = await commonFunc.checkIfAlreadyRegistered(reqBody.email);
     if(!isUserAlreadyRegistered.isPresent) {
-        return res.status(404).send({ message: `User with ${reqBody.email} emailid not registered!!!`, status: false });
+        res.statusCode = util.USER_NOT_FOUND.statusCode;
+        return res.send(util.USER_NOT_FOUND);
     }
 
     try {
         let result = await userClassReq.loginUser(reqBody,loginServiceReq,res);
-        res.status(200).send({ message: 'User Login Seccessfully!!!', status: true, data: result });
+        res.statusCode = result.statusCode;
+        res.send(result);
     } catch (err) {
         console.error(err);
-        return res.status(400).send({ err: err, status: false });
+        res.statusCode = err.statusCode;
+        return res.send(err);
     }
 });
 

@@ -2,6 +2,7 @@ var DeleteEmployeeService = function () { };
 var mysqlConnection = require('../../mysql-connect');
 let commonFunction = require('../../common/CommonFunction');
 let commonQueries = require('../../utils/QueryUtility');
+let Util = require('./../../utils/Util');
 require('dotenv').config()
 
 DeleteEmployeeService.prototype.deleteEmployeeDataMethod = async (reqParams, tokenData, request) => {
@@ -11,6 +12,7 @@ DeleteEmployeeService.prototype.deleteEmployeeDataMethod = async (reqParams, tok
         let commonFunc = new commonFunction();
         let msyqlConn = new mysqlConnection();
         let commonQuery = new commonQueries();
+        let util = new Util();
         let conn = await msyqlConn.createDbConnection();
         conn.connect();
 
@@ -24,14 +26,15 @@ DeleteEmployeeService.prototype.deleteEmployeeDataMethod = async (reqParams, tok
         conn.query(commonQuery.DELETE_EMPLOYEE,values, (err, data) => {
             if (err) {
                 reject(err);
-                return console.error(err);
+                return reject(util.INTERNAL_SERVER_ERROR);
             }
             console.log('DATA');
             conn.end();
             if(data.affectedRows == 0) {
-                reject('Employee with this emp_no not present!!!')
-            } else
-            resolve(data);
+                return reject(util.EMP_NOT_FOUND);
+            } else {
+                return resolve(util.DELETE_SUCCESS);
+            }
         });
 
     });
