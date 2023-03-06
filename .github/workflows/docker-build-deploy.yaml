@@ -15,7 +15,7 @@ jobs:
   create-image-and-push-to-dockerhub:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - name: workdir
         run: |
           echo $DOCKER_USERNAME
@@ -25,9 +25,9 @@ jobs:
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - name: Build docker image
-        run: docker-compose build
+        run: docker-compose builda
       - name: Push docker image to repository
-        run: docker push "$DOCKER_USERNAME/$DOCKER_REPOSITORY:gke-mysql-v4"
+        run: docker push "$DOCKER_USERNAME/$DOCKER_REPOSITORY:gke-mysql-v1"
   # deployment:
   #   needs: [create-image-and-push-to-dockerhub]
   #   runs-on: ubuntu-latest
