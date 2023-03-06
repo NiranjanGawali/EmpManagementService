@@ -3,7 +3,7 @@ services:
   service-app:
     container_name: emp_management_service
     build: './'
-    image: gawaliniranjan/emp_management_service:gke-mysql-v2
+    image: gawaliniranjan/emp_management_service:gke-mysql-v3
     environment:
       MYSQL_DATABASE: employee-mgmt-db
       MYSQL_USER: root
