@@ -32,7 +32,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  return res.send('Hello World!!!');
+  return res.send('Hello World, how are you ? !!!');
 });
 
 app.use('/user', require('./controller/User/SignupController'));
