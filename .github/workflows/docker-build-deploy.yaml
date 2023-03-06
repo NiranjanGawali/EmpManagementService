@@ -25,9 +25,9 @@ jobs:
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - name: Build docker image
-        run: docker-compose -f "docker-compose.yaml" up -d --build
+        run: docker-compose up -d
       - name: Push docker image to repository
-        run: docker push "$DOCKER_USERNAME/$DOCKER_REPOSITORY:gke-mysql-v1"
+        run: docker push "$DOCKER_USERNAME/$DOCKER_REPOSITORY:gke-mysql-v2"
   # deployment:
   #   needs: [create-image-and-push-to-dockerhub]
   #   runs-on: ubuntu-latest
