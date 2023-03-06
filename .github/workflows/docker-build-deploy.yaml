@@ -27,7 +27,4 @@ jobs:
       - name: Build docker image
         run: docker-compose build
       - name: Push docker image to repository
-        run: |
-          echo "$DOCKER_USERNAME/$PRODUCT_REPO_NAME:gke-mysql"
-          echo $DOCKER_USERNAME/$PRODUCT_REPO_NAME:gke-mysql
-          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_NAME:gke-mysql"
+        run: docker push "$DOCKER_USERNAME/$DOCKER_REPOSITORY:gke-mysql"
