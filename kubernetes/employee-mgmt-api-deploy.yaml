@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: emp-management-api-image
-          image: gawaliniranjan/emp_management_service:gke-mysql-v1
+          image: gawaliniranjan/emp_management_service:gke-mysql-v3
           resources:
             limits:
               memory: "128Mi"
