@@ -1,0 +1,38 @@
+[
+    {
+        "emp_no": 1412231,
+        "birth_date": "1993-06-30T18:30:00.000Z",
+        "first_name": "Vasant",
+        "last_name": "Diwane",
+        "gender": "F",
+        "hire_date": "2021-02-28T18:30:00.000Z",
+        "createdAt": "2021-03-18T07:03:04.000Z",
+        "updatedAt": "2021-03-18T07:03:38.000Z",
+        "created_by": "nir@gmail.com",
+        "updated_by": "nir@gmail.com"
+    },
+    {
+        "emp_no": 1956555,
+        "birth_date": "2021-02-28T18:30:00.000Z",
+        "first_name": "Robb",
+        "last_name": "Starke",
+        "gender": "M",
+        "hire_date": "2021-03-25T18:30:00.000Z",
+        "createdAt": "2021-03-17T18:41:09.000Z",
+        "updatedAt": "2021-03-17T18:41:19.000Z",
+        "created_by": "nir@gmail.com",
+        "updated_by": "nir@gmail.com"
+    },
+    {
+        "emp_no": 45,
+        "birth_date": "2021-03-16T18:30:00.000Z",
+        "first_name": "Gawali",
+        "last_name": "Niranjan",
+        "gender": "M",
+        "hire_date": "2021-03-19T18:30:00.000Z",
+        "createdAt": "2021-03-17T12:22:26.000Z",
+        "updatedAt": "2021-03-17T12:22:25.000Z",
+        "created_by": "nir@gmail.com",
+        "updated_by": "nir@gmail.com"
+    }
+]
