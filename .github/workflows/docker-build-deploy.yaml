@@ -28,17 +28,17 @@ jobs:
         run: docker-compose up -d
       - name: Push docker image to repository
         run: docker push "$DOCKER_USERNAME/$DOCKER_REPOSITORY:gke-mysql-v3"
-  # deployment:
-  #   needs: [create-image-and-push-to-dockerhub]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@master
-  #     - name: kubectl - Google Cloud GKE cluster.
-  #       uses: ameydev/gke-kubectl-action@master
-  #       env:
-  #         PROJECT_ID: ${{ secrets.GKE_PROJECT_ID }}
-  #         APPLICATION_CREDENTIALS: ${{ secrets.GKE_SA }}
-  #         CLUSTER_NAME: ${{ secrets.GKE_CLUSTER_NAME }}
-  #         ZONE_NAME: ${{ secrets.GKE_CLUSTER_ZONE }}
-  #       with:
-  #         args: apply -f kubernetes/
+  deployment:
+    needs: [create-image-and-push-to-dockerhub]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: kubectl - Google Cloud GKE cluster.
+        uses: ameydev/gke-kubectl-action@master
+        env:
+          PROJECT_ID: ${{ secrets.GKE_PROJECT_ID }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GKE_SA }}
+          CLUSTER_NAME: ${{ secrets.GKE_CLUSTER_NAME }}
+          ZONE_NAME: ${{ secrets.GKE_CLUSTER_ZONE }}
+        with:
+          args: apply -f kubernetes/
