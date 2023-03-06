@@ -1,0 +1,30 @@
+name: Docker build and Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+  DOCKER_REPOSITORY: ${{secrets.DOCKER_REPOSITORY}}
+
+jobs:
+  create-image-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: workdir
+        run: |
+          echo $DOCKER_USERNAME
+          echo $DOCKER_PASSWORD
+          echo $DOCKER_REPOSITORY
+      - name: Docker Login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: Build docker image
+        run: docker build . --file Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_NAME:luffy"
+      - name: Push docker image to repository
+        run: docker push "$DOCKER_USERNAME/$PRODUCT_REPO_NAME:luffy"

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emp-mgmt-api-deploy
+  labels:
+    name: emp-mgmt-api-deploy
+    app: employee-management
+spec:
+  selector:
+    matchLabels:
+      name: emp-mgmt-api-pod
+      app: employee-management
+  template:
+    metadata:
+      name: emp-mgmt-api-pod
+      labels:
+        name: emp-mgmt-api-pod
+        app: employee-management
+    spec:
+      containers:
+        - name: emp-management-api-image
+          image: gawaliniranjan/emp_management_service:gke-mysql
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "256m"
+          ports:
+            - containerPort: 5000
+  replicas: 2
