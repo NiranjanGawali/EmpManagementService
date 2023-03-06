@@ -27,7 +27,7 @@ jobs:
       - name: Build docker image
         run: docker-compose up -d
       - name: Push docker image to repository
-        run: docker push "$DOCKER_USERNAME/$DOCKER_REPOSITORY:gke-mysql-v3"
+        run: docker push "$DOCKER_USERNAME/$DOCKER_REPOSITORY:gke-mysql-v0"
   deployment:
     needs: [create-image-and-push-to-dockerhub]
     runs-on: ubuntu-latest
