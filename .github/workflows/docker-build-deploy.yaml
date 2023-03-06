@@ -25,6 +25,6 @@ jobs:
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - name: Build docker image
-        run: docker build . --file Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_NAME:luffy"
+        run: docker build . -t "$DOCKER_USERNAME/$PRODUCT_REPO_NAME:luffy"
       - name: Push docker image to repository
         run: docker push "$DOCKER_USERNAME/$PRODUCT_REPO_NAME:luffy"
