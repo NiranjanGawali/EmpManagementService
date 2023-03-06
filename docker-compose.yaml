@@ -4,11 +4,6 @@ services:
     container_name: emp_management_service
     build: './'
     image: gawaliniranjan/emp_management_service:gke-mysql-v0
-    environment:
-      MYSQL_DATABASE: employee-mgmt-db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: winter
-      MYSQL_HOST: 34.93.250.126
     ports:
       - "5000:5000"
     restart: on-failure
